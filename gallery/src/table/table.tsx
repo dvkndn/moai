@@ -46,7 +46,7 @@ const LastSeenHeader = (): JSX.Element => (
 const Action: Column = ({ robot }: RowProps) => (
 	<div className={s.actions}>
 		{robot.deployed ? (
-			<M.Button highlight children="Deploy" />
+			<M.Button color={M.Button.color.highlight} children="Deploy" />
 		) : (
 			<>
 				<M.Button children="Retreat" />

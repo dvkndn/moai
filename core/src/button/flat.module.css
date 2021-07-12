@@ -16,6 +16,16 @@
 	color: var(--highlight-5);
 }
 
+/* DANGER */
+
+:global(.light) .danger {
+	color: var(--failure-6);
+}
+
+:global(.dark) .danger {
+	color: var(--failure-5);
+}
+
 /* INTERACTION */
 
 :global(.light) .main:hover {

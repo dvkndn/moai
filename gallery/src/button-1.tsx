@@ -13,9 +13,9 @@ const flat: ButtonProps = {
 
 const Row = (props: ButtonProps): JSX.Element => (
 	<>
-		<Button {...props} {...base} highlight />
+		<Button {...props} {...base} color={Button.color.highlight} />
 		<Button {...props} {...base} />
-		<Button {...props} {...base} {...flat} highlight />
+		<Button {...props} {...base} {...flat} color={Button.color.highlight} />
 		<Button {...props} {...base} {...flat} />
 	</>
 );

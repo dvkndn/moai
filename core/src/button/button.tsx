@@ -9,16 +9,25 @@ import s from "./button.module.css";
 import flat from "./flat.module.css";
 import outset from "./outset.module.css";
 
+interface ButtonColor {
+	className: {
+		outset: string;
+		flat: string;
+	};
+	busy: {
+		outset: ProgressCircleColor;
+		flat: ProgressCircleColor;
+	};
+}
+
 interface ButtonBusyStyle {
 	className: string;
 	color: ProgressCircleColor;
-	highlightColor: ProgressCircleColor;
 }
 
 export interface ButtonStyle {
 	main: string;
 	selected: string;
-	highlight: string;
 	busy: ButtonBusyStyle;
 }
 
@@ -93,10 +102,12 @@ export interface ButtonProps {
 	 */
 	selected?: boolean;
 	/**
-	 * If set to `true`, the button is highlighted, e.g. with a highlight
-	 * background color.
+	 * If set to `true`, the button is highlighted, e.g. with
+	 * a highlight background.
 	 */
+	/** @deprecated */
 	highlight?: boolean;
+	color?: ButtonColor;
 	/**
 	 * If set to `true`, the button's width is 100% of its container.
 	 */
@@ -188,16 +199,30 @@ interface ButtonComponent
 		outset: ButtonStyle;
 		flat: ButtonStyle;
 	};
+	color: {
+		highlight: ButtonColor;
+		danger: ButtonColor;
+	};
 }
+
+const getColor = (props: ButtonProps) => {
+	if (props.highlight !== undefined && props.color !== undefined)
+		throw Error(
+			"highlight and color cannot be defined at the same time. Use color only"
+		);
+	let color = props.color;
+	if (props.highlight) color = Button.color.highlight;
+	return props.style ? color?.className.flat : color?.className.outset;
+};
 
 const getClass = (props: ButtonProps) => {
 	const size = props.size ?? Button.sizes.medium;
 	const style = props.style ?? Button.styles.outset;
-	const classes = [s.button, size.main, style.main, outline.normal];
+	const color = getColor(props);
+	const classes = [s.button, size.main, style.main, outline.normal, color];
 	if (props.fill) classes.push(s.fill);
 	if (props.minWidth) classes.push(s.minWidth);
 	if (props.selected) classes.push(style.selected);
-	if (props.highlight) classes.push(style.highlight);
 	if (props.busy) classes.push(style.busy.className);
 	if (props.icon && props.iconRight) classes.push(s.iconRight);
 	return classes.join(" ");
@@ -205,7 +230,11 @@ const getClass = (props: ButtonProps) => {
 
 const getProgressColor = (props: ButtonProps): ProgressCircleColor => {
 	const style = props.style ?? Button.styles.outset;
-	return props.highlight ? style.busy.highlightColor : style.busy.color;
+	return props.color
+		? props.style
+			? props.color.busy.flat
+			: props.color.busy.outset
+		: style.busy.color;
 };
 
 export const ButtonChildren = (props: ButtonProps): JSX.Element => {
@@ -314,21 +343,40 @@ Button.styles = {
 	outset: {
 		main: [border.radius, outset.main].join(" "),
 		selected: outset.selected,
-		highlight: outset.highlight,
 		busy: {
 			className: outset.busy,
 			color: ProgressCircle.colors.neutral,
-			highlightColor: ProgressCircle.colors.inverse,
 		},
 	},
 	flat: {
 		main: [flat.main].join(" "),
 		selected: flat.selected,
-		highlight: flat.highlight,
 		busy: {
 			className: flat.busy,
 			color: ProgressCircle.colors.neutral,
-			highlightColor: ProgressCircle.colors.highlight,
+		},
+	},
+};
+
+Button.color = {
+	highlight: {
+		className: {
+			outset: outset.highlight,
+			flat: flat.highlight,
+		},
+		busy: {
+			outset: ProgressCircle.colors.inverse,
+			flat: ProgressCircle.colors.highlight,
+		},
+	},
+	danger: {
+		className: {
+			outset: outset.danger,
+			flat: flat.danger,
+		},
+		busy: {
+			outset: ProgressCircle.colors.inverse,
+			flat: ProgressCircle.colors.highlight,
 		},
 	},
 };

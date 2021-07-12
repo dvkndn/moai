@@ -42,7 +42,11 @@ export const PromptDialog = (props: Props): JSX.Element => {
 					<Button minWidth onClick={props.onCancel}>
 						Cancel
 					</Button>
-					<Button minWidth type="submit" highlight>
+					<Button
+						minWidth
+						type="submit"
+						color={Button.color.highlight}
+					>
 						OK
 					</Button>
 				</DialogFooter>

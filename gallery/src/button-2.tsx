@@ -9,7 +9,12 @@ const icon = Button.sizes.mediumIcon;
 
 const Row1 = (props: ButtonProps): JSX.Element => (
 	<div className={s.cols}>
-		<Button {...props} highlight icon={Go.GoChevronLeft} children="Back" />
+		<Button
+			{...props}
+			color={Button.color.highlight}
+			icon={Go.GoChevronLeft}
+			children="Back"
+		/>
 		<Button {...props} icon={Go.GoChevronRight} children="Next" />
 		<Button {...props} icon={Go.GoSearch} iconLabel="Search" />
 		<Button {...props} icon={Go.GoSearch} iconLabel="Search" size={icon} />

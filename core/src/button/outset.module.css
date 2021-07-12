@@ -72,6 +72,34 @@ a.main {
 	box-shadow: none;
 }
 
+/* DANGER */
+:global(.light) .danger,
+:global(.dark) .danger {
+	color: var(--white);
+	background-color: var(--failure-5);
+	box-shadow: var(--shadow), var(--inset-shadow) var(--failure-4);
+	font-weight: 500;
+}
+
+:global(.light) .danger {
+	--shadow: var(--shadow-size) rgba(0, 0, 0, 0.2);
+	border-color: var(--failure-7);
+}
+
+:global(.dark) .danger {
+	border-color: var(--black);
+}
+
+:global(.light) .danger:hover,
+:global(.dark) .danger:hover {
+	background-color: var(--failure-4);
+}
+:global(.light) .danger:active,
+:global(.dark) .danger:active {
+	background-color: var(--failure-6);
+	box-shadow: none;
+}
+
 /* SELECTED */
 
 :global(.light) .selected:not(.x) {

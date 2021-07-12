@@ -17,6 +17,7 @@ const meta: Meta = {
 		selected: Utils.arg("boolean", "Visual"),
 		size: Utils.arg(Button.sizes, "Visual"),
 		style: Utils.arg(Button.styles, "Visual"),
+		color: Utils.arg(Button.color, "Visual"),
 
 		children: Utils.arg(null, "Content"),
 		icon: Utils.arg(null, "Content"),
@@ -47,6 +48,7 @@ export default meta;
 interface Props {
 	style?: string;
 	size?: string;
+	color?: string;
 	fill?: boolean;
 	highlight?: boolean;
 	selected?: boolean;
@@ -63,6 +65,8 @@ export const Primary = (props: Props): JSX.Element => (
 		style={(Button.styles as any)[props.style!]}
 		// eslint-disable-next-line
 		size={(Button.sizes as any)[props.size!]}
+		// eslint-disable-next-line
+		color={(Button.color as any)[props.color!]}
 		fill={props.fill}
 		highlight={props.highlight}
 		selected={props.selected}
@@ -149,3 +153,7 @@ in a new tab:
 [3]: https://www.nngroup.com/articles/command-links
 `,
 });
+
+export const Danger = (): JSX.Element => (
+	<Button color={Button.color.danger} children="Danger" />
+);

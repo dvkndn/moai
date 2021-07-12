@@ -16,7 +16,7 @@ export const AlertDialog = (props: Props): JSX.Element => (
 			<Button
 				minWidth
 				autoFocus
-				highlight
+				color={Button.color.highlight}
 				onClick={props.onOk}
 				children="OK"
 			/>
