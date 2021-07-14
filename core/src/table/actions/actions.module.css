@@ -3,3 +3,7 @@
 	align-items: center;
 	gap: 16px;
 }
+
+.fitContent {
+	width: 0px;
+}
