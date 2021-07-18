@@ -1,62 +1,67 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Input } from "@moai/core";
 import { useState } from "react";
 
+const defaultValue = "GoodBye";
 const InputTesting = () => {
 	const [value, setValue] = useState<string>("");
 	return (
 		<div>
 			<Input value={value} setValue={setValue} aria-label="input" />
 			<div>{value}</div>
-			<button data-testid="button" onClick={() => setValue("Goodbye")}>
-				Change
-			</button>
+			<button onClick={() => setValue(defaultValue)}>Change</button>
 		</div>
 	);
 };
 
 describe("Testing Input Controlled Props", () => {
 	test("div value should change after Input value change", async () => {
+		const inputText = "Hello";
 		render(<InputTesting />);
 
 		const inputElement = screen.getByLabelText("input") as HTMLInputElement;
 
-		fireEvent.change(inputElement, { target: { value: "Hello" } });
-		expect(inputElement.value).toBe("Hello");
-		expect(screen.getByText("Hello")).toBeDefined();
+		userEvent.type(inputElement, inputText);
+		expect(inputElement).toHaveValue(inputText);
+		expect(screen.getByText(inputText)).toBeTruthy();
 	});
 
 	test("Input's text should be changed when props.value is changed", async () => {
 		render(<InputTesting />);
 
 		const inputElement = screen.getByLabelText("input") as HTMLInputElement;
-		const buttonElement = screen.getByTestId("button");
+		const buttonElement = screen.getByRole("button", { name: "Change" });
 
-		fireEvent.click(buttonElement);
-		expect(screen.getByText("Goodbye")).toBeDefined();
-		expect(inputElement.value).toBe("Goodbye");
+		userEvent.click(buttonElement);
+		expect(screen.getByText(defaultValue)).toBeDefined();
+		expect(inputElement).toHaveValue(defaultValue);
 	});
 });
 
 describe("Testing Input Uncontrolled Props", () => {
 	test("props.defaultValue should be displayed before Input's text change", async () => {
-		render(<Input defaultValue="Foo" aria-label="default-input" />);
+		const defaultValue = "Foo";
+		render(
+			<Input defaultValue={defaultValue} aria-label="default-input" />
+		);
 
 		const inputElement = screen.getByLabelText(
 			"default-input"
 		) as HTMLInputElement;
 
-		expect(inputElement.value).toBe("Foo");
+		expect(inputElement).toHaveValue(defaultValue);
 	});
 
 	test("props.defaultValue should be replace when Input's text change", async () => {
+		const inputValue = "Hello";
 		render(<Input defaultValue="Foo" aria-label="default-input" />);
 
 		const inputElement = screen.getByLabelText(
 			"default-input"
 		) as HTMLInputElement;
 
-		fireEvent.change(inputElement, { target: { value: "Hello" } });
-		expect(inputElement.value).toBe("Hello");
+		fireEvent.change(inputElement, { target: { value: inputValue } });
+		expect(inputElement).toHaveValue(inputValue);
 	});
 });
